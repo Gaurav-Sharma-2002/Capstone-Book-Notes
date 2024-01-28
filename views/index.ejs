@@ -1,0 +1,97 @@
+<%- include('partials/header.ejs') %>
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/styles/main.css">
+
+        <!-- linking font awesome stylesheet to get ⭐ icons to display ratings  -->
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <title>Book Notes</title>
+    </head>
+
+    <body>
+
+        <div class="books">
+
+            <!-- sort by section  -->
+            <div class="sort">
+                <p>Sort by :</p>
+                <form action="/sort" method="post">
+                    <select name="sortOption" id="" class="font-size-lg">
+                        <option value="rating">Rating</option>
+                        <option value="date">Date</option>
+                        <option value="title">Title</option>
+                    </select>
+                    <input type="submit" value="Go" class="font-size-lg">
+                </form>
+            </div>
+
+
+            <!--
+                book details section
+                using a forEach loop to generate data for each book
+            -->
+            <% bookData.forEach(book=> { %>
+                <div class="book">
+
+                    <div class="book-image">
+                        <img src="/images/book<%=book.cover_id%>.jpg" alt="rich-dad-poor-dad" width="300px"
+                            height="400px">
+                    </div>
+
+                    <div class="book-details">
+
+                        <h1>
+                            <%= book.book_name %>
+                        </h1>
+
+                        <h2>
+                            By : <%= book.author_name %>
+                        </h2>
+
+                        <h2>
+                            Review :
+                        </h2>
+
+                        <p>
+                            <%= book.review_text %>
+                        </p>
+
+                        <h3 class="inl-blk">Review date :</h3>
+                        <p class="inl-blk">
+                            <!-- using toLocaleDateString() to make date display on page as "28/1/2024" instead of "2024-01-24T18:30:00.000Z" format -->
+                            <%= book.review_date.toLocaleDateString() %>
+                        </p>
+
+                        <h2>Rating</h2>
+                        <!-- generating ⭐ stars  -->
+                        <div class="rating" action="" method="post">
+                            <% for (let i=0; i < book.rating; i++) { %>
+                                <span class="fa fa-star checked"></span>
+                                <% } %>
+                                    <!-- generating blank stars  -->
+                                    <% if(book.rating < 5){ %>
+                                        <% for ( let i=0; i < (5-book.rating); i++) { %>
+                                            <span class="fa fa-star"></span>
+                                            <% } %>
+                                                <% } %>
+                        </div>
+                    </div>
+
+
+                </div>
+                <% }); %>
+
+        </div>
+
+        <%- include('partials/footer.ejs') %>
+
+    </body>
+
+    </html>
